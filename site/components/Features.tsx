@@ -22,7 +22,7 @@ const FEATURES: { title: string; body: string; pose: Partial<Pose> }[] = [
 
 export function Features() {
   return (
-    <section className="px-4 py-20">
+    <section className="px-4 py-12">
       <Stagger inView className="mx-auto grid max-w-5xl gap-4 sm:grid-cols-3">
         {FEATURES.map((f) => (
           <Item key={f.title}>

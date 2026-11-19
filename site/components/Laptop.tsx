@@ -5,15 +5,24 @@ import { NotchDemo, useFitScale } from "./NotchDemo";
 
 const STAGE_W = 1000;
 const STAGE_H = 336;
+const MIN_SCALE = 0.6;
+const EDGE_FADE = "linear-gradient(to right, transparent, black 12%, black 88%, transparent)";
 
 /** A MacBook screen mock hosting the live notch demo; scales down on narrow screens. */
 export function Laptop() {
-  const { ref, scale } = useFitScale(STAGE_W);
+  const { ref, scale: fit } = useFitScale(STAGE_W);
+  // On phones, don't shrink past 0.6: crop the laptop's sides instead, centred on the notch.
+  const scale = Math.max(fit, MIN_SCALE);
+  const offset = ((fit - scale) * STAGE_W) / 2;
   return (
-    <div ref={ref} className="w-full" style={{ height: STAGE_H * scale }}>
+    <div
+      ref={ref}
+      className="w-full overflow-x-clip"
+      style={{ height: STAGE_H * scale, maskImage: fit < MIN_SCALE ? EDGE_FADE : undefined }}
+    >
       <div
         className="origin-top-left"
-        style={{ width: STAGE_W, height: STAGE_H, transform: `scale(${scale})` }}
+        style={{ width: STAGE_W, height: STAGE_H, transform: `translateX(${offset}px) scale(${scale})` }}
       >
         {/* Bezel 22 = screen 12 + 10 padding (concentric) */}
         <div className="mx-auto w-[920px] rounded-[22px] bg-[#0d0d0f] p-[10px] shadow-[0_0_0_1px_rgba(0,0,0,0.25),0_30px_60px_-20px_rgba(30,20,60,0.45),0_12px_24px_-12px_rgba(0,0,0,0.3)]">

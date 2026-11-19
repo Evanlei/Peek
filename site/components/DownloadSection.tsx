@@ -6,7 +6,7 @@ import { DOWNLOAD, INSTALL_HOOK, REPO } from "@/lib/links";
 
 export function DownloadSection() {
   return (
-    <section id="download" className="scroll-mt-24 px-4 py-20">
+    <section id="download" className="scroll-mt-24 px-4 pt-16 pb-20">
       <Stagger inView className="mx-auto max-w-2xl text-center">
         <Item>
           <div className="mx-auto grid size-20 place-items-center rounded-[22px] bg-neutral-950 shadow-[0_12px_30px_-12px_rgba(0,0,0,0.5)]">
@@ -48,7 +48,7 @@ export function DownloadSection() {
             <a href={REPO} className="font-medium text-neutral-800 underline decoration-neutral-300 underline-offset-4 transition-[text-decoration-color] duration-150 ease-out hover:decoration-neutral-500">
               Clone the repo
             </a>{" "}
-            and run <code className="font-mono text-[13px]">make run</code>.
+            and run <code className="whitespace-nowrap font-mono text-[13px]">make run</code>.
           </p>
         </Item>
       </Stagger>
@@ -70,7 +70,7 @@ function Step({ n, title, children }: { n: number; title: string; children: Reac
 
 function Code({ children }: { children: string }) {
   return (
-    <pre className="mt-3 overflow-x-auto overscroll-x-contain rounded-xl bg-neutral-950 px-4 py-3 font-mono text-[12.5px] leading-relaxed text-neutral-200">
+    <pre className="mt-3 rounded-xl whitespace-pre-wrap break-all bg-neutral-950 px-4 py-3 font-mono text-[12.5px] leading-relaxed text-neutral-200">
       <code>{children}</code>
     </pre>
   );

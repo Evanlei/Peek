@@ -7,23 +7,17 @@ import { REPO } from "@/lib/links";
 
 export function Hero() {
   return (
-    <section className="relative px-4 pt-32 pb-16 sm:pt-40">
+    <section className="relative px-4 pt-32 pb-12 sm:pt-40">
       <Stagger className="mx-auto flex max-w-3xl flex-col items-center text-center">
         <Item>
-          <span className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-[13px] font-medium text-neutral-600 shadow-[0_0_0_1px_rgba(0,0,0,0.06),0_1px_2px_rgba(0,0,0,0.04)]">
-            <span className="size-1.5 rounded-full bg-[#33D66B]" />
-            For Claude Code on macOS
-          </span>
-        </Item>
-        <Item>
-          <h1 className="mt-6 text-5xl font-bold tracking-tighter text-balance sm:text-6xl">
+          <h1 className="text-5xl font-bold tracking-tighter text-balance sm:text-6xl">
             Your agents, living in the notch.
           </h1>
         </Item>
         <Item>
           <p className="mx-auto mt-5 max-w-xl text-lg text-pretty text-muted-foreground">
-            Peek turns each Claude Code session into a little character on your MacBook&apos;s notch. See what it&apos;s
-            doing, how full its context is and what it costs, and approve permission requests without switching windows.
+            Each Claude Code session becomes a little character in your MacBook&apos;s notch. See what it&apos;s doing and
+            what it costs, and approve its requests without leaving what you&apos;re working on.
           </p>
         </Item>
         <Item>
@@ -39,7 +33,7 @@ export function Hero() {
           </div>
         </Item>
         <Item>
-          <p className="mt-4 text-[13px] text-muted-foreground">Free and open source · macOS 14 or later</p>
+          <p className="mt-4 text-[13px] text-muted-foreground">Free and open source · For Claude Code on macOS 14+</p>
         </Item>
       </Stagger>
       <Stagger className="mx-auto mt-16 max-w-5xl">
@@ -48,7 +42,7 @@ export function Hero() {
         </Item>
         <Item>
           <p className="mt-6 text-center text-sm text-muted-foreground">
-            A live recreation of Peek, running in your browser. Hover the notch, and answer a request when one shows up.
+            A live recreation running in your browser. Hover the notch, and answer a request when one shows up.
           </p>
         </Item>
       </Stagger>

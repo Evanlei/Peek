@@ -285,10 +285,11 @@ export function NotchDemo() {
           <motion.div
             className="pointer-events-none absolute left-1/2 top-[52px] -translate-x-1/2 rounded-full bg-white/70 px-3 py-1 text-xs font-medium text-neutral-700 shadow-[0_1px_2px_rgba(0,0,0,0.06),0_4px_12px_rgba(0,0,0,0.08)] backdrop-blur"
             initial={{ opacity: 0 }}
-            animate={{ opacity: mode === "collapsed" ? 1 : 0, transition: { delay: 0.6, duration: 0.3 } }}
+            animate={mode === "collapsed" ? { opacity: 1, transition: { delay: 0.6, duration: 0.3 } } : { opacity: 0, transition: { duration: 0.15 } }}
             exit={{ opacity: 0, transition: { duration: 0.15 } }}
           >
-            ↑ Hover the notch
+            ↑ <span className="[@media(hover:none)]:hidden">Hover</span>
+            <span className="hidden [@media(hover:none)]:inline">Tap</span> the notch
           </motion.div>
         )}
       </AnimatePresence>
