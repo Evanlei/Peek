@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { CritterMark } from "./CritterMark";
 import { GitHubIcon } from "./Icons";
 import { PrimaryButton } from "./Buttons";
-import { REPO } from "@/lib/links";
+import { DOWNLOAD_PAGE, REPO } from "@/lib/links";
 
 /** jmo's floating navbar: transparent at the top, a frosted bar once you scroll. */
 export function Navbar() {
@@ -48,7 +48,7 @@ export function Navbar() {
           >
             <GitHubIcon className="size-[18px]" />
           </Link>
-          <PrimaryButton href="#download" size="sm">Download</PrimaryButton>
+          <PrimaryButton href={DOWNLOAD_PAGE} size="sm">Download</PrimaryButton>
         </nav>
       </div>
     </header>

@@ -3,7 +3,7 @@ import { PrimaryButton, SecondaryButton } from "./Buttons";
 import { GitHubIcon } from "./Icons";
 import { Item, Stagger } from "./Reveal";
 import { Laptop } from "./Laptop";
-import { REPO } from "@/lib/links";
+import { DOWNLOAD_PAGE, REPO } from "@/lib/links";
 
 export function Hero() {
   return (
@@ -22,7 +22,7 @@ export function Hero() {
         </Item>
         <Item>
           <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row">
-            <PrimaryButton href="#download">
+            <PrimaryButton href={DOWNLOAD_PAGE}>
               <Download className="-ml-0.5 size-[18px]" strokeWidth={2.25} />
               Download for macOS
             </PrimaryButton>
