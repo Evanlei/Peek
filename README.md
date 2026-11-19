@@ -91,7 +91,7 @@ site/                    Landing page (Next.js); `make site` to run it
 | Command | What it does |
 |---|---|
 | `make run` | Release build and launch |
-| `make debug` | Debug build and launch |
+| `make debug` | Debug build, with the snapshot and `/debug` extras |
 | `make demo` | Launch with fake agents that cycle through every state |
 | `make dist` | Universal `build/dist/Peek.zip` |
 | `make stop` | Quit Peek |
