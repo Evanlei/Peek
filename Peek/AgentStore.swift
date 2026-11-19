@@ -17,6 +17,8 @@ final class AgentStore {
         agents = named
     }
     @ObservationIgnored private var timer: Timer?
+    /// Off while recording the scripted demo so nothing changes state at random.
+    @ObservationIgnored var randomStatusChanges = true
 
     /// Fraction of the rolling 5-hour usage window consumed. Plan limits aren't in the
     /// JSONL logs, so live mode leaves this nil and the header hides the ring.
@@ -193,7 +195,7 @@ final class AgentStore {
                 agents[i].subagents.removeFirst()
             }
         }
-        if Int.random(in: 0..<14) == 0, let i = agents.indices.randomElement() {
+        if randomStatusChanges, Int.random(in: 0..<14) == 0, let i = agents.indices.randomElement() {
             let next = AgentStatus.allCases.randomElement()!
             agents[i].status = next
             switch next {

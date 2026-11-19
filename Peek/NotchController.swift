@@ -62,6 +62,7 @@ final class NotchController {
     private let forcePill = ProcessInfo.processInfo.environment["PEEK_FORCE_PILL"] == "1"
     private let pinnedOpen = ProcessInfo.processInfo.environment["PEEK_EXPANDED"] == "1"
     private let pinnedClosed = ProcessInfo.processInfo.environment["PEEK_EXPANDED"] == "0"
+    private let recording = ProcessInfo.processInfo.environment["PEEK_RECORD"] != nil
 
     init(store: AgentStore) {
         self.store = store
@@ -81,6 +82,7 @@ final class NotchController {
         observeRequests()
         #if DEBUG
         scheduleDebugSnapshot()
+        scheduleDemoRecording()
         #endif
 
         NotificationCenter.default.addObserver(
@@ -145,7 +147,7 @@ final class NotchController {
     }
 
     private func checkHover() {
-        guard !pinnedOpen, !pinnedClosed else { return }
+        guard !pinnedOpen, !pinnedClosed, !recording else { return }
         // While the approval card is up, don't hover-expand: expanding would move the
         // card (and its Allow button) out from under the cursor.
         guard !(state.isAlerting && !state.isExpanded) else { leftAt = nil; return }
@@ -199,6 +201,57 @@ final class NotchController {
             let rep = NSBitmapImageRep(cgImage: img)
             try? rep.representation(using: .png, properties: [:])?.write(to: URL(fileURLWithPath: path))
             print("snapshot written \(img.width)x\(img.height)")
+        }
+    }
+
+    /// PEEK_RECORD=/dir (with PEEK_FAKE=1) → play a scripted demo and write
+    /// the panel as numbered PNG frames for the landing page video.
+    /// Timeline: collapsed → hover open → close → request arrives → allowed.
+    private func scheduleDemoRecording() {
+        guard let dir = ProcessInfo.processInfo.environment["PEEK_RECORD"] else { return }
+        store.randomStatusChanges = false
+        let gateway = store.agents.firstIndex { $0.project == "api-gateway" }
+        if let i = gateway {
+            store.agents[i].request = nil
+            store.agents[i].status = .working
+            store.agents[i].action = "Edit db/migrations/0042.sql"
+        }
+        try? FileManager.default.createDirectory(atPath: dir, withIntermediateDirectories: true)
+        let fps = 30.0, length = 12.5
+        let start = Date().addingTimeInterval(1.5)   // let the scene settle first
+        let id = CGWindowID(panel.windowNumber)
+        let writer = DispatchQueue(label: "peek.record")
+        var frame = 0
+        func at(_ t: Double, _ f: @escaping () -> Void) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5 + t) { MainActor.assumeIsolated(f) }
+        }
+        at(1.6) { self.setExpanded(true) }
+        at(6.4) { self.setExpanded(false) }
+        at(7.4) {
+            guard let i = gateway else { return }
+            self.store.agents[i].status = .needsInput
+            self.store.agents[i].action = "Waiting for permission"
+            self.store.agents[i].subagents = []
+            self.store.agents[i].request = PermissionRequest(tool: "Bash", detail: "npm run migrate")
+        }
+        at(10.2) { if let i = gateway { self.store.approve(self.store.agents[i].id) } }
+        Timer.scheduledTimer(withTimeInterval: 1 / fps, repeats: true) { timer in
+            let t = Date().timeIntervalSince(start)
+            guard t >= 0 else { return }
+            guard t < length else {
+                timer.invalidate()
+                print("recorded \(frame) frames")
+                writer.async { exit(0) }
+                return
+            }
+            guard let img = CGWindowListCreateImage(.null, .optionIncludingWindow, id,
+                                                    [.boundsIgnoreFraming, .bestResolution]) else { return }
+            let name = String(format: "%@/%05d_%.4f.png", dir, frame, t)
+            frame += 1
+            writer.async {
+                try? NSBitmapImageRep(cgImage: img).representation(using: .png, properties: [:])?
+                    .write(to: URL(fileURLWithPath: name))
+            }
         }
     }
     #endif
