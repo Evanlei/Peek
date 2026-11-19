@@ -12,7 +12,15 @@ Each session shows up as a small pixel character. Hover the notch to see what ev
 
 ## Install
 
-Requires macOS 14+, Xcode 16+ and [Claude Code](https://code.claude.com).
+Requires macOS 14+ and [Claude Code](https://code.claude.com).
+
+**Download:** get [Peek.zip](https://github.com/Evanlei/Peek/releases/latest/download/Peek.zip), unzip it and move Peek to Applications. Peek isn't notarized yet, so the first time you open it, go to **System Settings → Privacy & Security** and click **Open Anyway**. To approve requests from the notch, install the hook (needs `jq`):
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/Evanlei/Peek/main/scripts/install-hook.sh | sh
+```
+
+**Build from source** (Xcode 16+):
 
 ```sh
 git clone https://github.com/Evanlei/Peek.git
