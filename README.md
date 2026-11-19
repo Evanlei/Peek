@@ -107,6 +107,10 @@ Peek runs all the time, so it's built to stay light:
 
 On an Apple-silicon MacBook with a Release build, it uses about **2–3% CPU collapsed** and about **8% while expanded**. It only expands while you hover or a request is waiting.
 
+## Landing page
+
+`site/` is the landing page: Next.js 15, Tailwind 4 and Motion. It includes a live, in-browser recreation of the notch. Run it with `make site`.
+
 ## Development
 
 ```
